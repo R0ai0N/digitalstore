@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<main>
+  <div class="content">
+    <div class="container">
+      <h2 class="content__title">{{ title }}</h2>
+      <div class="content__cards list_cards">
+        {% for product in products %}
+        {% include 'shop/components/_product_card.html' with card_class='h-card' %}
+        {% empty %}
+        <p class="content__description">Товары не найдены</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main %}

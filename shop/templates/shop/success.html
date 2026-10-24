@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<main>
+  <div class="content">
+    <div class="container">
+      <div class="content_info">
+        <h2 class="content__title_info">Ваша оплата прошла успешно</h2>
+        <p class="content__description">Спасибо за покупку! Наш менеджер скоро свяжется с вами для подтверждения доставки.</p>
+      </div>
+      <div class="order_btns">
+        <a href="{% url 'profile' %}" class="btn_order">Мои заказы</a>
+        <a href="{% url 'main' %}" class="btn_order">На главную</a>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main %}

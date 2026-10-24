@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<main>
+    <div class="content">
+        <div class="container">
+            <h2 class="login_title">Регистрация</h2>
+
+            <div class="login_content">
+                <div class="login">
+                    <div class="login_form">
+                        <form action="{% url 'registration' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.first_name }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.last_name }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password1 }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password2 }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.phone_number }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.photo }}
+                            </div>
+
+                            <button class="btn btn-register" type="submit">Зарегистироваться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="register_info">
+                    <h2 class="first_visit">Уже есть аккаунт?</h2>
+                    <p>Если Вы уже проходили регистрацию, войдите через Ваш аккаунт или восстоновите свой доступ. </p>
+                    <a href="{% url 'login' %}" class="btn-to_login">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}

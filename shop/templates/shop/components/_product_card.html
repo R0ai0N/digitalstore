@@ -1,0 +1,46 @@
+{% load static %}
+{% load humanize %}
+{% load shop_tags %}
+{% get_favorites request as favs %}
+
+<div class="card {{ card_class }}">
+  {% if product.discount %}
+  <p class="product_discount"><img src="{% static 'image/icons/discount.svg' %}" alt=""></p>
+  {% endif %}
+  <a href="{{ product.get_absolute_url }}">
+    <div class="card_img">
+      <img src="{{ product.first_photo }}" alt="{{ product.title }}" class="image_good">
+    </div>
+    <p class="card_title">{{ product.title }}</p>
+    <div class="card_price">
+      <p class="price">{{ product.get_price|intcomma }} сум
+        {% if product.discount %}
+        <span class="old_price price">{{ product.price|intcomma }} сум</span>
+        {% endif %}
+      </p>
+      <span class="data_price">От {{ product.get_month_price|intcomma }} сум / 12 мес</span>
+    </div>
+  </a>
+  <div class="card_button">
+    <form action="{% url 'action_basket' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="product_slug" value="{{ product.slug }}">
+      <input type="hidden" name="action" value="add">
+      <a class="btn_card" href="#" onclick="this.closest('form').submit(); return false;"><img src="{% static 'image/icons/cage.svg' %}" alt=""> <span class="btn_text">В
+          корзину</span> </a>
+    </form>
+
+    <form action="{% url 'action_fav' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="product_slug" value="{{ product.slug }}">
+      <a href="#" class="link_fav" onclick="this.closest('form').submit(); return false;">
+        <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z"
+            {% if product in favs %}fill="#0F2859"{% endif %}
+            stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </form>
+  </div>
+</div>

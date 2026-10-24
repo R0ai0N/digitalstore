@@ -1,0 +1,17 @@
+<div class="header_baner">
+  <div class="header_baner-item">
+    <swiper-container class="mySwiper" pagination="true">
+      {% for banner in banners %}
+      <swiper-slide>
+        <img class="banner" src="{{ banner.image.url }}" alt="{{ banner.title }}">
+        <div class="container height_baner">
+          <div class="banner_text">
+            <p>{{ banner.descr }}</p>
+            <h2>{{ banner.title }}</h2>
+          </div>
+        </div>
+      </swiper-slide>
+      {% endfor %}
+    </swiper-container>
+  </div>
+</div>

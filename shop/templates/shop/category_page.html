@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load shop_tags %}
+
+{% block main %}
+<main>
+  <div class="content">
+    <div class="container">
+      <h2 class="content__title">{{ category.title }}</h2>
+
+      <div class="list_filter">
+        <form action="" method="get">
+          <div class="list_label">
+            <div class="brand">
+              <button class="cat_name" type="button"><span>Бренд
+                  {% if current_brand %}: {{ current_brand.title }}{% endif %}
+                </span> <img src="{% static 'image/icons/errow_down.svg' %}" alt=""></button>
+              <ul class="list_cat">
+                <li><a class="category" href="?{% query_params brand=None page=1 %}">Все</a></li>
+                {% for brand in brands %}
+                <li><a class="category" href="?{% query_params brand=brand.slug page=1 %}">{{ brand.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="brand brand1">
+              <button class="cat_name" type="button"><span>Модели
+                  {% if current_model %}: {{ current_model.title }}{% endif %}
+                </span> <img src="{% static 'image/icons/errow_down.svg' %}" alt=""></button>
+              <ul class="list_cat">
+                <li><a class="category" href="?{% query_params model=None page=1 %}">Все</a></li>
+                {% for model in models %}
+                <li><a class="category" href="?{% query_params model=model.slug page=1 %}">{{ model.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="brand brand2">
+              <button class="cat_name" type="button"><span>Цена от
+                  {% if request.GET.price_from %}: {{ request.GET.price_from|intcomma }}{% endif %}
+                </span> <img src="{% static 'image/icons/errow_down.svg' %}" alt=""></button>
+              <ul class="list_cat">
+                <li><a class="category" href="?{% query_params price_from=None page=1 %}">Все</a></li>
+                {% for price in prices %}
+                <li><a class="category" href="?{% query_params price_from=price page=1 %}">{{ price|intcomma }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="brand brand3">
+              <button class="cat_name" type="button"><span>Цена до
+                  {% if request.GET.price_to %}: {{ request.GET.price_to|intcomma }}{% endif %}
+                </span> <img src="{% static 'image/icons/errow_down.svg' %}" alt=""></button>
+              <ul class="list_cat">
+                <li><a class="category" href="?{% query_params price_to=None page=1 %}">Все</a></li>
+                {% for price in prices %}
+                <li><a class="category" href="?{% query_params price_to=price page=1 %}">{{ price|intcomma }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="content__cards list_cards">
+        {% for product in products %}
+        {% include 'shop/components/_product_card.html' with card_class='h-card' %}
+        {% empty %}
+        <p class="content__description">Товары не найдены</p>
+        {% endfor %}
+      </div>
+
+      {% include 'shop/components/_pagination.html' %}
+    </div>
+  </div>
+</main>
+{% endblock main %}

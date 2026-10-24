@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block main %}
+<main>
+    <div class="content">
+        <div class="container">
+            <div class="my_card_orders">
+                <h3>Моя Корзина</h3>
+            </div>
+
+            <div class="total_products_price">
+                <p class="total_products_cart"><span>Общее количество: </span> {{ basket_quantity }}</p>
+                <p class="total_price_cart"><span>Общая стоимость: </span> {{ basket_price|intcomma }}</p>
+            </div>
+            <ul class="list_card_orders ">
+                {% for item in products %}
+                <li class="order  order_cart">
+                    <div class="info">
+                        <a href="{{ item.product.get_absolute_url }}">
+                            <img class="order_cart_img" src="{{ item.product.first_photo }}" alt="{{ item.product.title }}">
+                        </a>
+                        <div class="info_order">
+                            <h4 class="product_title">{{ item.product.title }}</h4>
+                            <div class="color_quantity">
+                                <div class="color"><p>Цвет:</p> <span>{{ item.product.color_name }}</span> </div>
+
+                                <div class="quantity"><p>Кол-во:</p> <span>{{ item.quantity }}</span>
+
+                                    <div class="quantity_arrow">
+                                        <form action="{% url 'action_basket' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_slug" value="{{ item.product.slug }}">
+                                            <input type="hidden" name="action" value="add">
+                                            <a href="#" onclick="this.closest('form').submit(); return false;">
+                                                <img class="chg-quantity update-cart" src="{% static 'image/icons/arrow-up.png' %}" alt="">
+                                            </a>
+                                        </form>
+
+                                        <form action="{% url 'action_basket' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_slug" value="{{ item.product.slug }}">
+                                            <input type="hidden" name="action" value="delete">
+                                            <a href="#" onclick="this.closest('form').submit(); return false;">
+                                                <img class="chg-quantity update-cart" src="{% static 'image/icons/arrow-down.png' %}" alt="">
+                                            </a>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price_cart">
+                        <p class="product_price_title">Стоимость</p>
+                        <p class="product_price">{{ item.product.get_price|intcomma }}</p>
+                    </div>
+
+                    <div class="data_add">
+                        <p class="product_data">Дата добавления</p>
+                        <div class="data"><img src="{% static 'image/icons/clarity_date-line.svg' %}" alt=""> <span>{{ item.added_at|date:"d.m.Y" }}</span>
+                        </div>
+                    </div>
+                    <div class="price_cart">
+                        <p class="product_price_title">Итого</p>
+                        <p class="product_price">{{ item.get_total_price|intcomma }}</p>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="order  order_cart">
+                    <h4 class="product_title">Ваша корзина пуста</h4>
+                </li>
+                {% endfor %}
+            </ul>
+
+            {% if products %}
+            <div class="order_btns">
+                <form action="{% url 'clear_cart' %}" method="post">
+                    {% csrf_token %}
+                    <a href="{% url 'clear_cart' %}" class="btn_order" onclick="this.closest('form').submit(); return false;">Очистить корзину</a>
+                </form>
+                <a href="{% url 'checkout' %}" class="btn_order">Оформить заказ</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</main>
+{% endblock main %}
